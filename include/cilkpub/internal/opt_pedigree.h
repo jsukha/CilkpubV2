@@ -1,6 +1,13 @@
 /* opt_pedigree.h                  -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2012 Intel Corporation
  * All rights reserved.
@@ -44,6 +51,7 @@
  * @see Pedigrees
  */
 
+#include <inttypes.h>
 #include <cilk/cilk_api.h>
 
 namespace cilkpub {
@@ -83,7 +91,10 @@ namespace cilkpub {
         int delta = (is_reversed ? 1 : -1);
 
         // Use array notations to copy over the entire array. :)
-        pedbuf[0:d:1] = buffer[start:d:delta];
+
+	for (int j = 0; j < d; ++j) {
+	  pedbuf[j] = buffer[start + delta*j];
+	}
     }
 
     // Copy constructor. 
@@ -99,7 +110,9 @@ namespace cilkpub {
             m_rev_ped_full = (uint64_t*)malloc(sizeof(uint64_t) * m_length);
         }
         // Copy over terms from ped's array.
-        m_rev_ped_full[0:m_length] = ped.m_rev_ped_full[0:m_length];
+	for (int j = 0; j < m_length; ++j) {
+	  m_rev_ped_full[j] = ped.m_rev_ped_full[j];
+	}
     }
 
     template <int STATIC_PED_LENGTH>
@@ -175,7 +188,10 @@ namespace cilkpub {
         }
         // Copy the contents over from ped.
         m_length = new_length;
-        m_rev_ped_full[0:m_length] = ped.m_rev_ped_full[0:m_length];
+	for (int j = 0; j < m_length; ++j) {
+	  m_rev_ped_full[j] = ped.m_rev_ped_full[j];
+	}
+
         return *this;
     }
 
@@ -376,26 +392,26 @@ namespace cilkpub {
     
     // Forward iteration of pedigree.
     template <int STATIC_PED_LENGTH>
-    opt_pedigree<STATIC_PED_LENGTH>::const_iterator opt_pedigree<STATIC_PED_LENGTH>::begin() const
+    typename opt_pedigree<STATIC_PED_LENGTH>::const_iterator opt_pedigree<STATIC_PED_LENGTH>::begin() const
     {
         return std::reverse_iterator<const uint64_t*> (rend());
     }
 
     template <int STATIC_PED_LENGTH>
-    opt_pedigree<STATIC_PED_LENGTH>::const_iterator opt_pedigree<STATIC_PED_LENGTH>::end() const
+    typename opt_pedigree<STATIC_PED_LENGTH>::const_iterator opt_pedigree<STATIC_PED_LENGTH>::end() const
     {
         return std::reverse_iterator<const uint64_t*>(rbegin());
     }
 
     // Reverse iteration of pedigree.
     template <int STATIC_PED_LENGTH>
-    opt_pedigree<STATIC_PED_LENGTH>::const_reverse_iterator opt_pedigree<STATIC_PED_LENGTH>::rbegin() const
+    typename opt_pedigree<STATIC_PED_LENGTH>::const_reverse_iterator opt_pedigree<STATIC_PED_LENGTH>::rbegin() const
     {
         return this->get_rev_ped_array();
     }
 
     template <int STATIC_PED_LENGTH>
-    opt_pedigree<STATIC_PED_LENGTH>::const_reverse_iterator opt_pedigree<STATIC_PED_LENGTH>::rend() const
+    typename opt_pedigree<STATIC_PED_LENGTH>::const_reverse_iterator opt_pedigree<STATIC_PED_LENGTH>::rend() const
     {
         return this->get_rev_ped_array() + this->length();
     }
@@ -433,7 +449,6 @@ namespace cilkpub {
     {
         __cilkrts_pedigree pednode = __cilkrts_get_pedigree();
         const __cilkrts_pedigree *ped = &pednode;
-        const __cilkrts_pedigree *remainder = NULL;
         int length = 0;
 
         while ((NULL != ped) && (length < d)) {
@@ -475,7 +490,9 @@ namespace cilkpub {
         // Number of terms to copy is min(m_length, d).
         int terms_to_copy = (length() < d) ? length() : d;
 
-        buffer[0:terms_to_copy] = current_ped[0:terms_to_copy];
+	for (int j = 0; j < terms_to_copy; ++j) {
+	  buffer[j] = current_ped[j];
+	}
         return terms_to_copy;
     }
 
@@ -520,7 +537,8 @@ namespace cilkpub {
 #else
             len = std::snprintf(output_buf+current_len,
                                 DIGIT_LENGTH,
-                                "%llu ", buf[i]);
+                                "%" PRIu64 " ",
+				buf[i]);
 #endif            
             current_len += len;
             assert(current_len < max_output_length);
@@ -611,7 +629,10 @@ namespace cilkpub {
         // second time, to store the answer in our buffer.
         if (m_length > STATIC_PED_LENGTH) {
             m_rev_ped_full = (uint64_t*)malloc(sizeof(uint64_t) * m_length);
-            m_rev_ped_full[0:STATIC_PED_LENGTH] = m_rev_ped[0:STATIC_PED_LENGTH];
+
+	    for (int j = 0; j < STATIC_PED_LENGTH; ++j) {
+	      m_rev_ped_full[j] = m_rev_ped[j];
+	    }
 
             // Walk the remainder again.
             for (int start = STATIC_PED_LENGTH; start < m_length; ++start) {
@@ -667,7 +688,10 @@ namespace cilkpub {
 
         if (m_length > STATIC_PED_LENGTH) {
             m_rev_ped_full = (uint64_t*)malloc(sizeof(uint64_t) * m_length);
-            m_rev_ped_full[0:STATIC_PED_LENGTH] = m_rev_ped[0:STATIC_PED_LENGTH];
+
+	    for (int j = 0; j < STATIC_PED_LENGTH; ++j) {
+	      m_rev_ped_full[j] = m_rev_ped[j];
+	    }
 
             // Walk the remainder again.
             for (int start = STATIC_PED_LENGTH; start < m_length; ++start) {
@@ -684,7 +708,7 @@ namespace cilkpub {
         // reading is not in scope, and we return an empty pedigree.
         if (stop_node.rank > m_rev_ped_full[m_length-1]) {
             fprintf(stderr, "WARNING: reading in pedigree out of scope\n");
-            fprintf(stderr, "stop_node.rank = %llu, last term is %llu\n",
+            fprintf(stderr, "stop_node.rank = %" PRIu64 "last term is %" PRIu64 "\n",
                     stop_node.rank, m_rev_ped_full[m_length-1]);
             m_length = 0;
             return 0;

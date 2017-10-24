@@ -1,6 +1,13 @@
 /* test_scan_pack.cpp              -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2014 Intel Corporation
  * All rights reserved.
@@ -102,7 +109,6 @@ void test_pack(size_t n, size_t tilesize)  {
     IntT* a = new IntT[n];
     IntT* b = new IntT[n];
     IntT* b_expected = new IntT[n];
-    IntT initial_val = 42;
 
     cilk_for(size_t i = 0; i < n; ++i) {
         a[i] = (i+1) * (2*i+1)* 7;

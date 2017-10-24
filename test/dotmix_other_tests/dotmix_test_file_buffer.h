@@ -1,6 +1,13 @@
 /* dotmix_test_file_buffer.h                  -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2012 Intel Corporation
  * All rights reserved.
@@ -44,10 +51,12 @@
 #define __DOTMIX_TEST_FILE_BUFFER_H__
 
 #include <assert.h>
+#include <inttypes.h>
 #include <stdint.h>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+
 
 
 #include <cilk/cilk_api.h>
@@ -86,13 +95,12 @@ public:
             fopen_s(&m_f, fname, "wb");
 #else
             std::snprintf(fname, 400,
-                          "%s_Seed%llu.output",
+                          "%s_Seed%" PRIu64 ".output",
                           file_prefix,
                           m_seed);
             m_f = fopen(fname, "wb");
 #endif
             assert(m_f);
-//            std::printf("Opened output file %s\n", fname);
             memset(m_buf, 0, BLOCK_SIZE * sizeof(uint64_t));
         }
     }

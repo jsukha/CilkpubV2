@@ -1,6 +1,13 @@
 /* test_pedigrees.cpp                  -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2012 Intel Corporation
  * All rights reserved.
@@ -234,7 +241,6 @@ void test_pedigree_comparison()
     const int L=4;
     uint64_t ped1_array[L] = {1, 0, 4, 3};
     uint64_t ped1_rev_array[L] = {3, 4, 0, 1};
-    uint64_t ped2_array[L] = {1, 0, 4, 0};
     cilkpub::opt_pedigree<STATIC_PED_LENGTH> ped1 = cilkpub::opt_pedigree<STATIC_PED_LENGTH>(ped1_array, L, false);
     cilkpub::opt_pedigree<STATIC_PED_LENGTH> ped1_rev = cilkpub::opt_pedigree<STATIC_PED_LENGTH>(ped1_rev_array, L, true);
     comparison_test_helper(ped1, ped1_rev, 0);

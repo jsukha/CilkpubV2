@@ -1,6 +1,13 @@
 /* pedigrees.h                  -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2012-13 Intel Corporation
  * All rights reserved.
@@ -264,7 +271,7 @@ extern "C" {
 #elif (__CILKRTS_ABI_VERSION < 1) || (__INTEL_COMPILER <= 1200)
 // Check for other compilers.  Technically, this check should subsume
 // the one above, but I'll leave both in for now.
-#   error "<cilkpub/pedigrees.h> only works on compilers supporting Cilk Plus ABI 1 or higher."
+#   warning "<cilkpub/pedigrees.h> is only tested on compilers supporting Cilk Plus ABI 1 or higher."
 #endif
 
 namespace cilkpub {

@@ -1,6 +1,13 @@
 /* dotmix_rgen_driver.cpp                  -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2012 Intel Corporation
  * All rights reserved.
@@ -249,7 +256,6 @@ int rgen_driver(int argc, char* argv[])
         rng_type = atoi(argv[5]);
     }
 
-    const char* rng_string = NULL;
     const int BUFFER_SIZE = 200;
     char file_prefix[BUFFER_SIZE];
     // Generate the file name.

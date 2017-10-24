@@ -1,4 +1,11 @@
 #######################################################################
+# Copyright (c) 2017, Jim Sukha
+#
+# Use of this source code is governed by a BSD-style license that can
+# be found in the LICENSE file.
+#######################################################################
+
+#######################################################################
 #  Copyright (C) 2012 Intel Corporation
 #  All rights reserved.
 #

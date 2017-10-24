@@ -1,5 +1,12 @@
 /* dotmix_test_rgen_kernels.h                  -*-C++-*-
- *
+
+ *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+
  *************************************************************************
  *
  * Copyright (C) 2012-13 Intel Corporation
@@ -74,7 +81,7 @@ void dotmix_rgen_test_loop(int64_t n,
     // generate new "gold" hashes for random number files.  But
     // hacking around it this way is easier for now...
     int64_t initial_offset = 1;
-    #pragma cilk grainsize=1
+    //    #pragma cilk_grainsize=1
     cilk_for(int64_t i = 0; i < n + initial_offset; ++i) {
         if (i >= initial_offset) {
             uint64_t ans;
@@ -87,8 +94,8 @@ void dotmix_rgen_test_loop(int64_t n,
             //     cp.fprint(stderr, "Current_pedigree");
             //     PRINT_PEDIGREES_FIRST_LOOP++;
             // }
-        }        
-        __cilkrts_bump_loop_rank();
+        }
+	__cilkrts_bump_loop_rank();
     }
 }
 
@@ -113,7 +120,7 @@ void dotmix_rgen_test_loop_buffer(int64_t n,
     // Same bump-loop-rank hack.
     
     int initial_offset = 1;
-    #pragma cilk grainsize=1
+    #pragma cilk_grainsize=1
     cilk_for(int64_t i = 0;
              i < n/B + initial_offset;
              ++i) {

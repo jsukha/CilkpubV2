@@ -1,4 +1,4 @@
-Cilkpub README
+CilkpubV2 README
 
 This readme file is processed by doxygen.  To generate html
 documentation, type "make doc" in the root directory and open
@@ -6,11 +6,26 @@ html/index.html.
 
 
 /**
- * \mainpage A User-Contributed Library of Cilk Code
+ * \mainpage CilkpubV2
  *
- * @version 1.06
+ * @version 2.0
  *
- 
+ *
+ * CilkpubV2 is a port of the Cilkpub code version 1.06 from https://cilkplus.org
+ * to work with the Tapir compiler. 
+ *
+ * See  https://github.com/wsmoses/Tapir-Meta.
+ * 
+ * 
+ * NOTE: This port is only partially complete. Some components may not
+ * be fully supported yet, particularly those involving pedigrees.
+ * 
+ *
+ *
+ *
+ *
+ * @section Cilkpub Original README
+ *  
  * @section motivation Motivation
  * 
  * The Cilkpub project aims to facilitate the adoption and use of Cilk

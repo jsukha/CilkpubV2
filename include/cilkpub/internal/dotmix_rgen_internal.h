@@ -1,6 +1,13 @@
 /* dotmix_rgen_internal.h                 -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2012-13 Intel Corporation
  * All rights reserved.
@@ -160,8 +167,7 @@ namespace cilkpub {
             const __cilkrts_pedigree stop_node = dprng.m_scope.get_stop_node();
 
             // 3 terms for storing the result.
-            uint64_t tmp_result[3];
-            tmp_result[:] = 0;
+            uint64_t tmp_result[3] = { 0, 0, 0 };
         
             // Walk up the pedigree and accumulate the reverse dot
             // product. 
@@ -274,8 +280,7 @@ namespace cilkpub {
             }
 
             // 3 terms for storing the result.
-            uint64_t tmp_result[3];
-            tmp_result[:] = 0;
+            uint64_t tmp_result[3] = { 0, 0, 0 };
 
             pedigree::const_iterator it = sped.begin();
             // Accumulate the terms of the dot product.

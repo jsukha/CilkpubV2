@@ -1,4 +1,11 @@
 #######################################################################
+# Copyright (c) 2017, Jim Sukha
+#
+# Use of this source code is governed by a BSD-style license that can
+# be found in the LICENSE file.
+#######################################################################
+
+#######################################################################
 #  Copyright (C) 2012-15 Intel Corporation
 #  All rights reserved.
 #
@@ -101,9 +108,15 @@ else
      CXX=clang
      LDFLAGS += -lcilkrts
      CXXFLAGS += -fcilkplus -DCILKPLUS_CLANG=1
-  else
+  else ifeq ($(CILKPLUS_ICC), 1)
      CC=icc
      CXX=icpc
+  else
+     # Default behavior for this branch: Using Tapir
+     CC=clang
+     CXX=clang++
+     LDFLAGS += -lcilkrts
+     CXXFLAGS += -ftapir=cilk -DCILKPLUS_CLANG=1
   endif
   INCLUDE_FLAGS+= -I$(CILKPUB_DIR)
   CFLAGS = -Wall

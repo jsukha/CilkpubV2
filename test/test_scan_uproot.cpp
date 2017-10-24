@@ -1,6 +1,13 @@
 /* test_scan_uproot.cpp              -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2015 Intel Corporation
  * All rights reserved.
@@ -84,7 +91,7 @@ void test_scan_uproot(void) {
         // Clear flags
         std::fill_n( reduce_mark, n, 0 );
         std::fill_n( scan_mark, n, 0 );
-        std::atomic<int> call_count = 0;
+        std::atomic<int> call_count(0);
         const size_t tile_size = 4;
 
         int PRINT_INTERVAL = 50;

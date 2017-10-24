@@ -1,6 +1,13 @@
 /* dotmix_util.h                 -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2012 Intel Corporation
  * All rights reserved.
@@ -155,8 +162,7 @@ namespace cilkpub {
         cilk_for(int i = 0; i < n; ++i)
         {
             uint64_t compressed_ped_val;
-            uint64_t tmp_result[3];
-            tmp_result[:] = 0;
+            uint64_t tmp_result[3] = { 0, 0, 0};
             dotprod_update_mod_p((i+1),
                                  table_term,
                                  tmp_result);

@@ -1,6 +1,13 @@
 /* test_creducer_opadd_array.cpp               -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2013-14, Intel Corporation
  * All rights reserved.
@@ -407,7 +414,6 @@ void test_move_creducer() {
     int* x = new int[L];
     int* y = new int[L];
     int* expected = new int[L];
-    const int fib_start = 4;
 
     for (int i = 0; i < L; ++i) {
         x[i] = 0;

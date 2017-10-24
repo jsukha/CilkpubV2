@@ -1,6 +1,13 @@
 /* test_dotmix_pi.cpp                  -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2012 Intel Corporation
  * All rights reserved.
@@ -274,7 +281,6 @@ template <typename DPRNG_TYPE>
 void test_monte_carlo_pi(uint64_t N, int P, int use_buffered_get)
 {
     unsigned long long t1, t2;
-    uint64_t piEst;
 
     // Number of repetitions. 
     const int NUM_REPS = 5;

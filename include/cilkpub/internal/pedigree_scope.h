@@ -1,6 +1,13 @@
 /* pedigree_scope.h                  -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2012 Intel Corporation
  * All rights reserved.
@@ -101,7 +108,7 @@ namespace cilkpub {
     void opt_pedigree_scope<STATIC_PED_LENGTH>::fprint(FILE* f, const char* header) const
     {
         m_ped.fprint(f, header);
-        std::fprintf(f, ": stop node: rank=%llu, ptr=%p\n",
+        std::fprintf(f, ": stop node: rank=%" PRIu64 ", ptr=%p\n",
                      m_stop_node.rank,
                      m_stop_node.parent);
     }
