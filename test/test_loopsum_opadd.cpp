@@ -1,6 +1,13 @@
 /* test_loopsum_opadd.cpp                  -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2012 Intel Corporation
  * All rights reserved.
@@ -83,7 +90,7 @@ double inner_loop_body(int B, int i)
 double loopsum_normal(int n, int B)
 {
     cilk::reducer_opadd<double> loopsum(0);
-#pragma cilk grainsize = 1    
+    #pragma cilk grainsize 1
     _Cilk_for(int i = 0; i < n/B; ++i) {
         loopsum += inner_loop_body(B, i);
     }
@@ -94,7 +101,7 @@ double loopsum_normal(int n, int B)
 double loopsum_dreducer(int n, int B)
 {
     DetRedDouble loopsum(0);
-#pragma cilk grainsize = 1    
+#pragma cilk grainsize 1    
     _Cilk_for(int i = 0; i < n/B; ++i) {
         loopsum += inner_loop_body(B, i);
     }

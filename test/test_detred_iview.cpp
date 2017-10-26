@@ -1,6 +1,13 @@
 /* test_detred_iview.cpp              -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2013, Intel Corporation
  * All rights reserved.
@@ -64,11 +71,6 @@ inline void pass_test() {
 
 static bool within_tol(double sum, double expected) {
     return ((sum - expected) * (sum - expected)) < 1.0e-12;
-}
-
-static bool within_tol(int sum, int expected)
-{
-    return (sum == expected);
 }
 
 
@@ -362,8 +364,8 @@ void test_det_reducer_iview_update_simple2()
     uint64_t temp_ped1[BUFFER_LENGTH] = {1, 2, 4, 7};
     uint64_t temp_ped2[BUFFER_LENGTH] = {1, 2, 4, 12};
 
-    uint64_t temp_ped3[BUFFER_LENGTH] = {1, 2, 5, -1};    
-    uint64_t temp_ped4[BUFFER_LENGTH] = {3, 2, 1, -1};
+    uint64_t temp_ped3[BUFFER_LENGTH] = {1, 2, 5, uint64_t(-1)};    
+    uint64_t temp_ped4[BUFFER_LENGTH] = {3, 2, 1, uint64_t(-1)};
     // <1, 2, 4, 7>
     pedigree p1 = pedigree(temp_ped1, 4, false);
     // <1, 2, 4, 12>
@@ -417,8 +419,6 @@ template <typename T>
 void test_det_reducer_iview_update_simple3()
 {
     CILKTEST_REMARK(2, "test_det_reducer_iview_update_simple3\n");
-    int base_verbosity = 3;
-
 
     const int BUFFER_LENGTH = 4;
     uint64_t temp_ped1[BUFFER_LENGTH] = {0, 0, 0, 0};
@@ -593,7 +593,6 @@ void test_det_reducer_iview_merge_helper(uint64_t start_i,
     CILKTEST_PRINT(base_verbosity+2, "Right end: ", final_ped, "\n");
 
     pedigree common_stem_ped = pedigree(common_stem, STEM_LENGTH, true);
-    T initial_value(0);
 
     test_iview_merge_base<T>(base_verbosity,
                              common_stem_ped,

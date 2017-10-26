@@ -1,6 +1,13 @@
 /* test_detred_opadd.cpp               -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2013, Intel Corporation
  * All rights reserved.
@@ -74,11 +81,6 @@ inline void pass_test() {
 
 static bool within_tol(double sum, double expected) {
     return ((sum - expected) * (sum - expected)) < 1.0e-12;
-}
-
-static bool within_tol(int sum, int expected)
-{
-    return (sum == expected);
 }
 
 #define COMPLEX_ADD

@@ -1,6 +1,13 @@
 /* detred_iview.cpp                 -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2013 Intel Corporation
  * All rights reserved.
@@ -100,8 +107,6 @@ namespace cilkpub {
     template <typename T>
     int DetRedIview<T>::active_pedigree_common_prefix_length(const pedigree& ped)
     {
-        int active_length = active_pedigree_length();
-        int ped_length = ped.length();
         int common_length = 0;
         pedigree::const_iterator it = ped.begin();
         uint64_t active_term;
@@ -399,15 +404,10 @@ namespace cilkpub {
     // Validate all the ranges
     template <typename T>
     inline void DetRedIview<T>::validate_value_range(int pedstack_idx) const {
-        int verbose = 0;
         int num_errors = 0;
         assert(pedstack_idx >= 0);
         assert(pedstack_idx < (int)m_index_stack.size());
         const std::vector<TaggedElem<T> >& my_stack = (pedstack_idx >= m_Coffset ? m_Rstack : m_Lstack);
-        // int local_idx = pedstack_idx;
-        // if (local_idx >= m_Coffset) {
-        //     local_idx -= m_Coffset;
-        // }
 
         int start_s = m_index_stack[pedstack_idx].starting_offset;
         int stop_s =  m_index_stack[pedstack_idx+1].starting_offset-1;
@@ -599,7 +599,9 @@ namespace cilkpub {
 
         // The offset in the pedigree of the common term between the
         // start and active pedigrees.
-        int common_term_offset = common_stem_length()-1;
+	//        int common_term_offset = common_stem_length()-1;
+	// Not used.
+
         // Make sure left and right stacks agree on how many common
         // terms they have.
         assert(m_Loffset + 1 + common_stem_length() == start_pedigree_length());
@@ -783,7 +785,7 @@ namespace cilkpub {
         tfprint(f, iview.m_initial_value);
         fprintf(f, "\n");
 
-        fprintf(f, "%sLStack_size=%llu, RStack_size=%llu, m_Loffset=%d, m_Coffset = %d, m_Roffset=%d),  %zu index entries\n",
+        fprintf(f, "%sLStack_size=%zu, RStack_size=%zu, m_Loffset=%d, m_Coffset = %d, m_Roffset=%d),  %zu index entries\n",
                 indent_string, 
                 iview.m_Lstack.size(),
                 iview.m_Rstack.size(),

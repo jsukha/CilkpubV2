@@ -1,6 +1,13 @@
 /* test_detred_pedlist.h               -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2013, Intel Corporation
  * All rights reserved.
@@ -91,12 +98,6 @@ struct SimpleTestPed {
             rev_pedigree[(*ped_length - 1) - q] = tmp_ped[q];
         }
 
-        if (0) {
-            fprintf(stderr, "Ped term %lld: ", ped_val);
-//        print_rev_pedigree(rev_pedigree, *ped_length);
-            fprintf(stderr, "\n");
-        }
-
         // Deal with the first term of the common stem as a special case.
         if (*ped_length == 0) {
             // We strippped off all the terms (because they were 0).
@@ -113,11 +114,6 @@ struct SimpleTestPed {
         }
         *ped_length = *ped_length + stem_length-1;
 
-        if (0) {
-            fprintf(stderr, "Ped term %lld: ", ped_val);
-//        print_rev_pedigree(rev_pedigree, *ped_length);
-            fprintf(stderr, "\n");
-        }
     }
 
     static inline
@@ -158,7 +154,6 @@ struct SimpleTestPed {
             }
         }
 
-        int num_terms = 0;
         // Sort the terms.
 	std::sort(ped_list.begin(), ped_list.end());
         fprintf(stderr, "const int TESTPED_LENGTH = %zu; \n",

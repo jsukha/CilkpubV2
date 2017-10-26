@@ -1,6 +1,13 @@
 /* test_rank_range_tag.cpp                  -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2012, Intel Corporation
  * All rights reserved.
@@ -83,7 +90,6 @@ int test_rank_range_tag_fixed() {
     TEST_ASSERT(p.right_child() == v);
     TEST_ASSERT(p.left_child() == ls);
     
-    rank_range_tag tmp = v.parent();
     TEST_ASSERT(p == v.parent());
     TEST_ASSERT(v.parent() == p);
     TEST_ASSERT(ls.parent() == p);

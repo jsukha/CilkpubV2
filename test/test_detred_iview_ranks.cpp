@@ -1,3 +1,45 @@
+/* test_detred_iview_ranks.cpp              -*-C++-*-
+ *
+ *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
+ *
+ * Copyright (C) 2013, Intel Corporation
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *  * Neither the name of Intel Corporation nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *************************************************************************/
+
 #include <assert.h>
 #include <cstdio>
 #include <cstdlib>
@@ -96,7 +138,7 @@ void test_detred_iview_constructors()
     DetRedIview<T> current = DetRedIview<T>(1);
     tfprint(stdout, current);
 
-    #pragma cilk grainsize=1
+    #pragma cilk grainsize 1
     _Cilk_for (int i = 0; i < 100; ++i) {
         pedigree cped_in_loop = pedigree::current();
         check_current_pedigree_view<T>(3);
@@ -196,7 +238,7 @@ void test_rank_group_fixed()
 {
     int start_i = 1;
     int last_i = 100;
-    uint64_t test_ped[2] = {0, start_i};
+    uint64_t test_ped[2] = {0, uint64_t(start_i)};
     int base_verbosity = 4;
     int start_val = 41;
 
@@ -345,9 +387,9 @@ void test_merge_helper(int start_val, int final_val) {
     for (int split = start_val+1; split <= final_val; ++split) {
         CILKTEST_REMARK(base_verbosity, "TestMerge(%d, %d, %d)\n", start_val, split, final_val);
         double v1, v2, v3;
-        uint64_t start_ped_array[2] = {0, start_val};
-        uint64_t split_ped_array[2] = {0, split};
-        uint64_t final_ped_array[2] = {0, final_val};
+        uint64_t start_ped_array[2] = {0, uint64_t(start_val)};
+        uint64_t split_ped_array[2] = {0, uint64_t(split)};
+        uint64_t final_ped_array[2] = {0, uint64_t(final_val)};
         pedigree start_ped = pedigree(start_ped_array, 2, false);
         pedigree split_ped = pedigree(split_ped_array, 2, false);
         pedigree final_ped = pedigree(final_ped_array, 2, false);

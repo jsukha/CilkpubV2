@@ -1,6 +1,13 @@
 /* rank_range_tag.cpp                 -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2013 Intel Corporation
  * All rights reserved.
@@ -173,7 +180,7 @@ namespace cilkpub {
     }
 
     inline void rank_range_tag::fprint(FILE* f) const {
-        fprintf(f, "{%llu, %d}",
+        fprintf(f, "{%" PRIu64 ", %d}",
                 this->m_start,
                 (int)this->m_lg_size);
     }

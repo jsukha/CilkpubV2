@@ -1,6 +1,13 @@
 /* detred_range_groups.cpp                  -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2013 Intel Corporation
  * All rights reserved.
@@ -376,7 +383,7 @@ namespace cilkpub {
         else {
             int s = idx_stack[idx_stack.size() - 2].starting_offset;
             uint64_t min_rank = value_stack[s].tag.start();
-            fprintf(stderr, "Error: merging left_range = (%llu, %llu), right = (%llu, %llu)\n",
+            fprintf(stderr, "Error: merging left_range = (%" PRIu64 ", %" PRIu64 "), right = (%" PRIu64 ", %" PRIu64 ")\n",
                     min_rank, 
                     value_stack.back().tag.end(), 
                     right_min_rank, right_max_rank);

@@ -1,6 +1,13 @@
 /* rank_range.h                  -*-C++-*-
  *
  *************************************************************************
+ *  Copyright (c) 2017, Jim Sukha
+ * 
+ *  Use of this source code is governed by a BSD-style license that
+ *  can be found in this project's LICENSE file.
+ *************************************************************************
+ *
+ *************************************************************************
  *
  * Copyright (C) 2013 Intel Corporation
  * All rights reserved.
@@ -36,6 +43,7 @@
 #ifndef __CILK_RANK_RANGE_TAG_H_
 #define __CILK_RANK_RANGE_TAG_H_
     
+#include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
