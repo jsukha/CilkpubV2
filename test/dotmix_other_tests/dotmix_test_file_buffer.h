@@ -139,7 +139,7 @@ public:
     }
 
 private:
-    static const int BLOCK_SIZE = 4096*4;
+    static const unsigned BLOCK_SIZE = 4096*4;
 
     /// Buffer to store random numbers.
     uint64_t m_buf[BLOCK_SIZE];

@@ -81,7 +81,11 @@ void dotmix_rgen_test_loop(int64_t n,
     // generate new "gold" hashes for random number files.  But
     // hacking around it this way is easier for now...
     int64_t initial_offset = 1;
+#ifdef CILKPLUS_GCC
+    #pragma cilk grainsize = 1
+#else
     #pragma cilk grainsize 1
+#endif    
     cilk_for(int64_t i = 0; i < n + initial_offset; ++i) {
         if (i >= initial_offset) {
             uint64_t ans;
@@ -120,7 +124,11 @@ void dotmix_rgen_test_loop_buffer(int64_t n,
     // Same bump-loop-rank hack.
     
     int initial_offset = 1;
+#ifdef CILKPLUS_GCC    
+    #pragma cilk grainsize = 1
+#else
     #pragma cilk grainsize 1
+#endif    
     cilk_for(int64_t i = 0;
              i < n/B + initial_offset;
              ++i) {

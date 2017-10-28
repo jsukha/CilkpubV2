@@ -116,7 +116,9 @@ else
      CC=clang
      CXX=clang++
      LDFLAGS += -lcilkrts
-     CXXFLAGS += -ftapir=cilk -DCILKPLUS_CLANG=1
+     CXXFLAGS += -ftapir=cilk -DCILKPLUS_CLANG=1 
+     # Temporary workaround, to tell Tapir that we can use Cilk API
+     CXXFLAGS += -DUSE_CILK_API=1
   endif
   INCLUDE_FLAGS+= -I$(CILKPUB_DIR)
   CFLAGS = -Wall
