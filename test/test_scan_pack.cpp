@@ -209,24 +209,24 @@ void TimePack( Kind kind, size_t N,
 
         for( size_t k=0; k<N; ++k )
             a[k] = (k%3)*10*k;
-        size_t m;
         double t;
 
-        unsigned long long t0, t1;
+        unsigned long long t0=0, t1=0;
         const size_t tilesize = 10000;
 
         // Predicate functor testing for testing pack.
 	SampleTestPred<T> test_pred;
+
 
         for( int i=-1; i<num_packings; ++i ) {
             if( i==0 )
                 t0 = CILKTEST_GETTICKS();
             switch( kind ) {
             case Serial:
-                m = serial_pack( a, N, b, test_pred );
+                serial_pack( a, N, b, test_pred );
                 break;
             case Cilk:
-                m = cilkpub::pack<T, tilesize>( a, N, b, test_pred );
+                cilkpub::pack<T, tilesize>( a, N, b, test_pred );
                 break;
             }
         }

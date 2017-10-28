@@ -127,10 +127,10 @@ void test_scan_uproot(void) {
                                 // Consume top-level reduction value.
                                 [&](Red r) {
                                     r.assert_equal( -1, n );
-                                    TEST_ASSERT_EQ_MSG(std::count( reduce_mark, reduce_mark+n, 1 ),
+                                    TEST_ASSERT_EQ_MSG((size_t)std::count( reduce_mark, reduce_mark+n, 1 ),
                                                        n,
                                                        "reduce did not process each item exactly once");
-                                    TEST_ASSERT_EQ_MSG(std::count( scan_mark, scan_mark+n, 0 ),
+                                    TEST_ASSERT_EQ_MSG((size_t)std::count( scan_mark, scan_mark+n, 0 ),
                                                        n,
                                                        "scan ran prematurely" );
                                     call_count++;
@@ -139,7 +139,7 @@ void test_scan_uproot(void) {
         TEST_ASSERT_EQ_MSG( call_count,
                             1,
                             "uproot functor not called exactly once" );
-        TEST_ASSERT_EQ_MSG(std::count( scan_mark, scan_mark+n, 1 ),
+        TEST_ASSERT_EQ_MSG((size_t)std::count( scan_mark, scan_mark+n, 1 ),
                            n,
                            "scan did not process each item exactly once" );
     }

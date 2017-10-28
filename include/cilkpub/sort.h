@@ -458,7 +458,7 @@ namespace cilkpub {
             for( size_t i=0; i<m; ++i )
                 col_sum[0u:m] += tally[i][0u:m];
 #endif
-            assert( col_sum[m-1]==xe-xs );
+            assert( col_sum[m-1]== static_cast<size_t>(xe-xs) );
             
             // Copy buckets into their bins and do the subsorts
             size_t block_size = ((xe-xs)+m-1)/m;

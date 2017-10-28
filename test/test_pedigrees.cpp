@@ -366,12 +366,12 @@ template <int STATIC_PED_LENGTH>
 void test_iteration()
 {
     CILKTEST_REMARK(2, "Checking pedigree iteration\n");
-    const int L = 5;
+    const size_t L = 5;
     uint64_t ped_array[L] = {0, 1, 2, 3, 4};
 
     {
         // Walk over const pedigree backwards and forwards.
-        int i = 0;
+        size_t i = 0;
         const cilkpub::opt_pedigree<STATIC_PED_LENGTH> cped
             = cilkpub::opt_pedigree<STATIC_PED_LENGTH>(ped_array, L, false);
 
@@ -380,7 +380,7 @@ void test_iteration()
              it < cped.rend();
              ++it, ++i) {
             CILKTEST_REMARK(3, "(%d,  %ld) ", i, *it);
-            assert(*it == (L-1 - i));
+            TEST_ASSERT(*it == (L-1 - i));
         }
         CILKTEST_REMARK(3, "\n");
 
@@ -390,7 +390,7 @@ void test_iteration()
              it < cped.end();
              ++it, ++i) {
             CILKTEST_REMARK(3, "(%d,  %ld) ", i, *it);
-            assert(*it == i);
+            TEST_ASSERT(*it == i);
         }
         CILKTEST_REMARK(3, "\n");
     }
@@ -669,7 +669,7 @@ void test_fib_run() {
         j = r2.begin();
 
         if (r1.size() < 100) {
-            int k = 0;
+            size_t k = 0;
             while (i != r1.end()) {
                 CILKTEST_REMARK(4, "Pedigree %d: ", k);
                 CILKTEST_PRINT(4, "From i: ", *i, ",   ");

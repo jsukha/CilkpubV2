@@ -164,7 +164,7 @@ private:
                              sizeof(uint64_t),
                              m_current_idx,
                              m_f);
-        assert(num_written == m_current_idx);
+        assert((int64_t)num_written == m_current_idx);
         m_current_idx = 0;
     }
   
