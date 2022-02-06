@@ -53,9 +53,7 @@
 #include <stdio.h>
 #include <cilk/cilk.h>
 
-#include "internal/cilkpub_compat.h"
-
-__CILKPUB_C_INLINE
+inline
 size_t cilkpub_c_scan_int_log2_split( size_t m ) {
     size_t k=1;
     while( 2*k<m ) k*=2;

@@ -261,19 +261,6 @@
 
 #include <cilk/cilk_api.h>
 
-#if defined(__INTEL_COMPILER) && (__INTEL_COMPILER > 1200) && (__INTEL_COMPILER < 1300)
-// For v12.1 of the Intel compiler, explicitly include an extra header
-// for backwards compatibility.
-extern "C" {
-#    include "internal/pedigrees_12_1_compat.h"
-}
-
-#elif (__CILKRTS_ABI_VERSION < 1) || (__INTEL_COMPILER <= 1200)
-// Check for other compilers.  Technically, this check should subsume
-// the one above, but I'll leave both in for now.
-#   warning "<cilkpub/pedigrees.h> is only tested on compilers supporting Cilk Plus ABI 1 or higher."
-#endif
-
 namespace cilkpub {
 
     /// The default number of pedigree terms that a pedigree object

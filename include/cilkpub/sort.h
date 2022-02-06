@@ -315,13 +315,9 @@ namespace cilkpub {
                                size_t freq[],
                                Compare comp ) {
             size_t d = floor_lg2(m);
-            // Work-around for Clang's lack of array notation.
-#if CILKPLUS_CLANG
             for (size_t j = 0; j < m; ++j)
                 freq[j] = 0;
-#else
-            freq[0u:m] = 0;
-#endif
+	    
             for( size_t i=0; i<n; ++i ) {
                 size_t k = 0;
                 for( size_t j=0; j<d; ++j )
@@ -335,11 +331,7 @@ namespace cilkpub {
           */        
         template<typename T>
         inline void move_construct( T& dst, T& src ) {
-#if CILKPUB_HAVE_STD_MOVE
             new(&dst) T(std::move(src));
-#else
-            new(&dst) T(src);
-#endif
         }
 
         /**
@@ -347,11 +339,7 @@ namespace cilkpub {
           */
         template<typename T>
         inline void move_destroy( T& dst, T& src ) {
-#if CILKPUB_HAVE_STD_MOVE
             dst = std::move(src);
-#else
-            dst = src; 
-#endif
             src.~T();
         }
 
@@ -443,21 +431,12 @@ namespace cilkpub {
             // Compute column sums of tally, forming the running sum of bin sizes.
             size_t col_sum[MAX_BINS];
 
-            // Working around a bug to get this code to compile using
-            // Cilk Plus GCC.  Hopefully this bug will be fixed soon...
-            // Also, work around CLANG's lack of array notation.
-#if CILKPLUS_GCC || CILKPLUS_CLANG 
             for (size_t q = 0; q < m; ++q) {
                 col_sum[q] = 0;
                 for ( size_t i = 0; i < m; ++i ) {
                     col_sum[q] += tally[i][q];
                 }
             }
-#else
-            col_sum[0u:m] = 0;
-            for( size_t i=0; i<m; ++i )
-                col_sum[0u:m] += tally[i][0u:m];
-#endif
             assert( col_sum[m-1]==xe-xs );
             
             // Copy buckets into their bins and do the subsorts

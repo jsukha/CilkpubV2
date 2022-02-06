@@ -43,12 +43,12 @@
 #include <vector>
 
 #include <cilk/cilk.h>
-#include <cilkpub/reducer_vector.h>
+#include <cilk/reducer_vector.h>
 
 // Global vector reducer to store numbers.
-cilk::reducer< cilkpub::op_vector<int> > red;
+cilk::reducer< cilk::op_vector<int> > red;
 
-// Minimum value of fib to keep. 
+// Minimum value of fib to keep.
 const int threshhold = 46368;
 
 // Calculate fib and store some intermediate results into reducer

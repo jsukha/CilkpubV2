@@ -36,8 +36,9 @@
 
 # Test names: For every item "x" in this list, the Makefile
 # expects a test file of the form "x_test.cpp"
-TEST_NAMES = sort scan scan_pack pedigrees dotmix_pi creducer_opadd_array \
-reducer_vector_simple
+TEST_NAMES = sort scan scan_pack pedigrees dotmix_pi reducer_vector_simple
+
+#creducer_opadd_array \
 
 CPP11_TEST_NAMES = scan_uproot
 

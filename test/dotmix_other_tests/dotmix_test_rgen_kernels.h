@@ -2,7 +2,7 @@
 
  *************************************************************************
  *  Copyright (c) 2017, Jim Sukha
- * 
+ *
  *  Use of this source code is governed by a BSD-style license that
  *  can be found in this project's LICENSE file.
  *************************************************************************
@@ -54,7 +54,8 @@
 
 
 // If we want to print out some initial pedigrees for debugging.
-// static int PRINT_PEDIGREES_FIRST_LOOP = 0;
+static bool ENABLE_PRINT_PEDIGREES = false;
+static int PRINT_PEDIGREES_FIRST_LOOP = 0;
 
 /**
  * @brief Generate n random numbers, using a single @c cilk_for loop,
@@ -70,32 +71,17 @@ void dotmix_rgen_test_loop(int64_t n,
     cilkpub::pedigree_scope cs = cilkpub::pedigree_scope::current();
     rng.init_scope(cs);
 
-    // Bump loop rank hack.
-    // Ignore the first iteration.  Depending on whether the compiler
-    // or the user is adding in the bump loop rank call, the first
-    // pedigree might be different.  But we've already hard-coded the
-    // comparison code to expect the loop rank term in the pedigree to
-    // start at "1".  Blah.
-    //
-    // The right answer is to eventually rerun the Dieharder tests to
-    // generate new "gold" hashes for random number files.  But
-    // hacking around it this way is easier for now...
-    int64_t initial_offset = 1;
-    //    #pragma cilk_grainsize=1
-    cilk_for(int64_t i = 0; i < n + initial_offset; ++i) {
-        if (i >= initial_offset) {
-            uint64_t ans;
-            ans = rng.get();
-            file.add_num(ans);
+    cilk_for(int64_t i = 0; i < n; ++i) {
+      uint64_t ans;
+      ans = rng.get();
+      file.add_num(ans);
 
-            // if (PRINT_PEDIGREES_FIRST_LOOP < 10) {
-            //     cilkpub::pedigree cp = cilkpub::pedigree::current();
-            //     fprintf(stderr, "Loop: i = %lld, ans = %llu\n", i, ans);
-            //     cp.fprint(stderr, "Current_pedigree");
-            //     PRINT_PEDIGREES_FIRST_LOOP++;
-            // }
-        }
-	__cilkrts_bump_loop_rank();
+      if (ENABLE_PRINT_PEDIGREES && (PRINT_PEDIGREES_FIRST_LOOP < 10)) {
+	cilkpub::pedigree cp = cilkpub::pedigree::current();
+	fprintf(stderr, "n=%ld, seed=%ld, Loop: i = %ld, ans = %lu\n", n, seed, i, ans);
+	cp.fprint(stderr, "Current_pedigree");
+	PRINT_PEDIGREES_FIRST_LOOP++;
+      }
     }
 }
 
@@ -117,42 +103,30 @@ void dotmix_rgen_test_loop_buffer(int64_t n,
     cilkpub::pedigree_scope cs = cilkpub::pedigree_scope::current();
     rng.init_scope(cs);
 
-    // Same bump-loop-rank hack.
-    
-    int initial_offset = 1;
-    #pragma cilk_grainsize=1
     cilk_for(int64_t i = 0;
-             i < n/B + initial_offset;
+             i < n/B;
              ++i) {
-        // Ignore the first iteration.  Depending on whether the
-        // compiler or the user is adding in the bump loop rank call,
-        // the first pedigree might be different.  We've already
-        // hard-coded the test to expect the loop rank term in the
-        // pedigree to start at "1".
-        if (i >= initial_offset) {
-            uint64_t buffer[B];
-            int start = (i-1) * B;
-            int end = i * B;
-            if (end > n) {
-                end = n;
-            }
+      uint64_t buffer[B];
+      int start = (i-1) * B;
+      int end = i * B;
+      if (end > n) {
+	end = n;
+      }
 
-            // if (PRINT_PEDIGREES_SECOND_LOOP < 10) {
-            //     cilkpub::pedigree cp = cilkpub::pedigree::current();
-            //     cp.fprint(stderr, "Current_pedigree");
-            //     fprintf(stderr, "\n");
-            //     bar++;
-            // }
+      // if (PRINT_PEDIGREES_SECOND_LOOP < 10) {
+      //     cilkpub::pedigree cp = cilkpub::pedigree::current();
+      //     cp.fprint(stderr, "Current_pedigree");
+      //     fprintf(stderr, "\n");
+      //     bar++;
+      // }
 
-            int size = end - start;
-            if (size > 0) {
-                rng.fill_buffer(buffer, size);
-                for (int j = 0; j < size; ++j) {
-                    file.add_num(buffer[j]);
-                }
-            }
-        }
-        __cilkrts_bump_loop_rank();
+      int size = end - start;
+      if (size > 0) {
+	rng.fill_buffer(buffer, size);
+	for (int j = 0; j < size; ++j) {
+	  file.add_num(buffer[j]);
+	}
+      }
     }
 }
 

@@ -8,17 +8,29 @@ html/index.html.
 /**
  * \mainpage CilkpubV2
  *
- * @version 2.0
+ * @version 2.1 
+ *  This version of Cilkpub is a port to run with the OpenCilk compiler.
+ *  See https://cilk.mit.edu/.
  *
- *
- * CilkpubV2 is a port of the Cilkpub code version 1.06 from https://cilkplus.org
- * to work with the Tapir compiler. 
- *
- * See  https://github.com/wsmoses/Tapir-Meta.
+ *  NOTE: This port is only partially complete.  Components involving pedigrees
+ *  (i.e., RNG using DotMix) are not fully functional.
  * 
+ *
+ * @section change_log Change Log
+ *
+ * The following updates have been made to Cilkpub:
+ *  - <b>In progress - [Version 2.1]</b>: Port to OpenCilk. Main changes include:
+ *      - Removal of conditional logic to compile for Windows and for
+ *        Cilk Plus compilers.
+ *      - Removal of conditional logic for pre C++11 code.
+ *      - Removal Cilkpub reducer vector implementation, since this is included in built-in Cilk headers.
+ *      - Removal of commutative reducer array.  Reducer implementations have changed significantly in OpenCilk and this functionality may need to be revisited.
+ *      - Removal of experimental deterministic reducer code.
  * 
- * NOTE: This port is only partially complete. Some components may not
- * be fully supported yet, particularly those involving pedigrees.
+ *  - <b>2017-10-24 - [Version 2.0]</b>:
+ *      - Port of the Cilkpub code version 1.06 from https://cilkplus.org
+ *        to work with the Tapir compiler. 
+ *        See  https://github.com/wsmoses/Tapir-Meta.
  * 
  *
  *
@@ -35,17 +47,6 @@ html/index.html.
  * organized avenue for making their own Cilk code available to
  * others.
 
- * @section change_log Change Log
- *
- * The following updates have been made to Cilkpub:
- *  - <b>2015-09-10 - [Version 1.06]</b>:
- *      - Updating scan to allow execution of an uproot function in between passes.
- *      - Fixed bug in scan.h in the type of <tt>output_idx</tt> in <tt>pack_scan_functor</tt>.
- *      - Changed test builds to assume existence of C++11 by default.
- *      - Modified <tt>reducer_vector.h</tt> to just use default version of the 
- *        file provided in the Cilk Plus reducer library, versions 15.0 and later.
- *      - Minor edits to eliminate compilation warnings on Windows and Intel 16.0 compiler.
- *      - Update to <tt>test_dotmix_pi.cpp</tt> to work around bugs in Intel 16.0 compiler.
  *      .
  *  - <b>2014-03-13 - [Version 1.05]</b>:
  *      - Added @ref Scan module, contributed by Arch Robison.

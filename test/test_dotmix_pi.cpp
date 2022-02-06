@@ -74,14 +74,6 @@
 #endif
 #include <limits>
 
-// Working around a bug in Intel 16.0 compiler.
-// Will remove this define once that bug has been fixed...
-#if (defined(__INTEL_COMPILER) && (__INTEL_COMPILER >= 1600))
-#    define PRINT_TEST_PEDIGREES 0
-#    warning "Skipping printing of pedigrees to work around compiler error."
-#else
-#    define PRINT_TEST_PEDIGREES 1
-#endif
 
 /// Debugging flag: set to true to print out random numbers generated.
 #define PRINT_RAND_NUMS false
@@ -99,6 +91,8 @@ inline void tfprint(FILE* f, cilkpub::pedigree_scope& scope)
 void null_func() {
 }
 
+const double UINT_MAX_AS_DOUBLE = (double)std::numeric_limits<uint64_t>::max();
+
 
 // Test the DPRNG using individual calls to "get".
 template <typename DPRNG_TYPE>
@@ -108,50 +102,39 @@ MonteCarloPi_using_get(uint64_t N, DPRNG_TYPE& dprng,
                        cilkpub::pedigree_scope& scope)
 {
 
-#if !(PRINT_TEST_PEDIGREES)
-    // Scope parameter is unused if we aren't printing pedigrees.
-    (void) scope;
-#endif
-    
     // Number of "hits" inside the circle
     cilk::reducer_opadd<uint64_t> inside(0);
     
     cilk_for (uint64_t i = 0; i < N; ++i) {
-        __cilkrts_bump_loop_rank();
+        __cilkrts_bump_worker_rank();
 
         // Get numbers from the DPRNG.
-#if PRINT_TEST_PEDIGREES	
         cilkpub::pedigree p0 = cilkpub::pedigree::current();
         cilkpub::pedigree sp0 = cilkpub::pedigree::current(scope);
         CILKTEST_PRINT(4, "Ped before: ", p0, "\n");
         CILKTEST_PRINT(4, "scoped Ped after x, y: ", sp0, "\n");
-#endif // PRINT_TEST_PEDIGREES	
 
         uint64_t x_sample = dprng.get();
 
-#if PRINT_TEST_PEDIGREES	
         cilkpub::pedigree p1 = cilkpub::pedigree::current();
         cilkpub::pedigree sp1 = cilkpub::pedigree::current(scope);
         CILKTEST_PRINT(4, "Ped after x: ", p1, "\n");
         CILKTEST_PRINT(4, "scoped Ped after x, y: ", sp1, "\n");
-#endif // PRINT_TEST_PEDIGREES	
 
         uint64_t y_sample = dprng.get();
 
-#if PRINT_TEST_PEDIGREES		
         cilkpub::pedigree ped = cilkpub::pedigree::current();
         cilkpub::pedigree sp2 = cilkpub::pedigree::current(scope);
         CILKTEST_PRINT(4, "Ped after x, y: ", ped, "\n");
         CILKTEST_PRINT(4, "scoped Ped after x, y: ", sp2, "\n");
-#endif // PRINT_TEST_PEDIGREES
         
         CILKTEST_REMARK(4, "%lu, %lu\n", x_sample, y_sample);
         
         check_sum += (x_sample + y_sample);
 
         // Convert to double floating point numbers in the closed interval [0, 1]
-        double x = (double)(x_sample)/std::numeric_limits<uint64_t>::max();
-        double y = (double)(y_sample)/std::numeric_limits<uint64_t>::max();
+        double x = (double)(x_sample)/UINT_MAX_AS_DOUBLE;
+        double y = (double)(y_sample)/UINT_MAX_AS_DOUBLE;
 
         if (PRINT_RAND_NUMS)
             std::cerr << "x = " << x << ", y = " << y << std::endl;
@@ -191,13 +174,11 @@ MonteCarloPi_using_fill_buffer(uint64_t N, DPRNG_TYPE& dprng,
         }
 
         // Get numbers from the DPRNG.
-#if PRINT_TEST_PEDIGREES	
         cilkpub::pedigree p0 = cilkpub::pedigree::current();
         cilkpub::pedigree sp0 = cilkpub::pedigree::current(scope);
         CILKTEST_REMARK(4, "fill_buffer block loop: i = %d, L = %d: \n", i, L);
         CILKTEST_PRINT(4, "Ped before: ", p0, "\n");
         CILKTEST_PRINT(4, "scoped Ped after x, y: ", sp0, "\n");
-#endif // PRINT_TEST_PEDIGREES	
         
         // Fill the buffer.
         dprng.fill_buffer(buffer, 2*L);
@@ -217,8 +198,8 @@ MonteCarloPi_using_fill_buffer(uint64_t N, DPRNG_TYPE& dprng,
             check_sum_serial += (x_sample + y_sample);
 
             // Convert to double floating point numbers in the closed interval [0, 1]
-            double x = (double)(x_sample)/std::numeric_limits<uint64_t>::max();
-            double y = (double)(y_sample)/std::numeric_limits<uint64_t>::max();
+            double x = (double)(x_sample)/UINT_MAX_AS_DOUBLE;
+            double y = (double)(y_sample)/UINT_MAX_AS_DOUBLE;
             double m = (x*x) + (y*y);
             if(m <= 1) // inside circle
                 ++inside_serial;

@@ -42,37 +42,15 @@
 #ifndef INCLUDED_CILKTEST_TIMING_DOT_H
 #define INCLUDED_CILKTEST_TIMING_DOT_H
 
-#include <cilk/common.h>
-
 #ifdef __cplusplus
 #   include <cstdio>
 #else
 #   include <stdio.h>
 #endif
 
-#ifdef _WIN32
-#   ifndef _WINBASE_
-__CILKRTS_BEGIN_EXTERN_C
-unsigned long __stdcall GetTickCount();
-__CILKRTS_END_EXTERN_C
-#   endif
-#endif  // _WIN32
-
 #if defined __unix__ || defined __APPLE__
 #   include <sys/time.h>
 #endif  // defined __unix__ || defined __APPLE__
-
-
-#if __INTEL_COMPILER >= 1600
-     // 16.0 compiler expects a const char* argument.
-#    define NOTIFY_ZC_INTRINSIC(arg, val) __notify_zc_intrinsic(arg, val)
-#elif __INTEL_COMPILER > 1200
-     // Older Intel compilers expect a (void*) argument
-#    define NOTIFY_ZC_INTRINSIC(arg, val) __notify_zc_intrinsic((void*)arg, val)
-#else
-     // No-op for intrinsic
-#    define NOTIFY_ZC_INTRINSIC(arg, val) 
-#endif
 
 
 /// @brief Return the system clock with millisecond resolution
@@ -85,15 +63,8 @@ __CILKRTS_END_EXTERN_C
 static inline unsigned long long CILKTEST_GETTICKS()
 {
     unsigned long long ans;
-    // When inlined, prevent code motion around this call
-#if __INTEL_COMPILER > 1200
-    NOTIFY_ZC_INTRINSIC("CILKTEST_GETTICKS_START", 0);
-#endif
 
-#ifdef _WIN32
-    // Return milliseconds elapsed since the system started
-    ans = GetTickCount();
-#elif defined(__unix__) || defined(__APPLE__)
+#if defined(__unix__) || defined(__APPLE__)
     // Return milliseconds elapsed since the Unix Epoch
     // (1-Jan-1970 00:00:00.000 UTC)
     struct timeval t;
@@ -101,13 +72,6 @@ static inline unsigned long long CILKTEST_GETTICKS()
     ans = t.tv_sec * 1000ULL + t.tv_usec / 1000;
 #else
 #   error CILKTEST_GETTICKS() not implemented for this OS
-#endif
-    /* UNREACHABLE */
-
-    // When inlined, prevent code motion around this call
-#if __INTEL_COMPILER > 1200
-    // Isn't that the point of having the annotations?
-    NOTIFY_ZC_INTRINSIC("CILKTEST_GETTICKS_END", 0);
 #endif
     return ans;
 }

@@ -174,7 +174,7 @@ for rng_type in xrange(0, len(RNG_MAP)):
                                             rng_type)
 
                 # Execute the command to generate an output file.
-                exec_cmd = "./%s %s" % (rgen_prog, args)
+                exec_cmd = "CILK_NWORKERS=1 ./%s %s" % (rgen_prog, args)
 
 #               cmds.append("echo \".... %s --> %s\"" % (exec_cmd, rgen_file))
                 if (VERBOSE >= 2) or run_dieharder:

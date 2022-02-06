@@ -29,10 +29,11 @@
 #  WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 #  POSSIBILITY OF SUCH DAMAGE.
 #######################################################################
+CXXFLAGS+= -fopencilk-enable-pedigrees
 
 # Sample names: For every item "x" in this list, the Makefile
 # expects a test file of the form "sample_x.cpp"
-SAMPLE_NAMES = cilksort creducer_opadd_array dotmix scan reducer_vector 
+SAMPLE_NAMES = cilksort scan reducer_vector
 CSAMPLE_NAMES = scan
 
 include sample_common.mk

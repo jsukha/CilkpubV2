@@ -7,6 +7,7 @@ VERBOSE_LEVEL=2
 TMP_FOLDER=tmp
 
 include $(CILKPUB_TOP)/mk/platform_vars.mk
+CXXFLAGS+= -fopencilk-enable-pedigrees -O2
 
 # Header files for the DotMix rgen tests.
 
@@ -58,5 +59,5 @@ endif
 
 $(TMP_FOLDER):
 	$(MKDIR_CMD) $(TMP_FOLDER)
-clean: 
+clean:
 	$(RM_CMD) $(TMP_FOLDER) $(TMP_DEBUG) $(TARGETS)

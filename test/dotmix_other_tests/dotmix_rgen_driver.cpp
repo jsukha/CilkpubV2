@@ -309,41 +309,15 @@ int rgen_driver(int argc, char* argv[])
 }
 
 
-
-
-#if __INTEL_COMPILER < 1300 
-void force_cilk_runtime_start() {
-    return;
-}
-
-int main_wrapper(int argc, char* argv[]) {
-    cilk_spawn force_cilk_runtime_start();
-    cilk_sync;
-    return rgen_driver(argc, argv);
-}
-
 int main(int argc, char* argv[])
 {
     // We are going to force CILK_NWORKERS=1, since we are writing
     // output to file.  Since we are using this test only to check
     // random number quality, this operation is not worth running in
     // parallel anyway.
-    int error = __cilkrts_set_param("nworkers", "1");
-    assert(!error);
-
-    return main_wrapper(argc, argv);
-}
-
-#else
-
-int main(int argc, char* argv[])
-{
-    // We are going to force CILK_NWORKERS=1, since we are writing
-    // output to file.  Since we are using this test only to check
-    // random number quality, this operation is not worth running in
-    // parallel anyway.
-    int error = __cilkrts_set_param("nworkers", "1");
-    assert(!error);
+    // int error = __cilkrts_set_param("nworkers", "1");
+    // assert(!error);
+  
+    // TBD: force single-threaded execution in OpenCilk.
     return rgen_driver(argc, argv);
 }
-#endif

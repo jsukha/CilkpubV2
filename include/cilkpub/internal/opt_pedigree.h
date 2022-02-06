@@ -51,6 +51,7 @@
  * @see Pedigrees
  */
 
+#include <cassert>
 #include <inttypes.h>
 #include <cilk/cilk_api.h>
 

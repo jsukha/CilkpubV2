@@ -35,7 +35,7 @@
  */
 
 #include <cilk/cilk.h>
-#include <cilkpub/reducer_vector.h>
+#include <cilk/reducer_vector.h>
 
 #include "cilktest_harness.h"
 
@@ -75,7 +75,7 @@ void initialize_data()
 }
 
 
-typedef cilk::reducer< cilkpub::op_vector<int> > R;
+typedef cilk::reducer< cilk::op_vector<int> > R;
 typedef std::vector<int> V;
 
 void test_constructors(std::vector<V> &vv)

@@ -168,7 +168,8 @@ namespace cilkpub {
         uint64_t prefix_result
             = internal::DotMixRgen<NUM_MIX_ITER>::get_compressed_pedigree(*this,
                                                                           &ped_length);
-        assert((ped_length > 0) && (ped_length < this->m_table_length));
+        assert((ped_length > 0));
+	assert((ped_length < this->m_table_length));
         uint64_t tab_term = this->m_table[ped_length];
 
         // Disable warning for switch on constant type for Windows.
